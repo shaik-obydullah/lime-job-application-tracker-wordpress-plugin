@@ -1,0 +1,137 @@
+/* ============================================
+   BASE.CSS - Reset & Foundation (scoped to plugin)
+   ============================================ */
+
+.ljat-app *,
+.ljat-app *::before,
+.ljat-app *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.ljat-app {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+.ljat-app h1,
+.ljat-app h2,
+.ljat-app h3,
+.ljat-app h4,
+.ljat-app h5,
+.ljat-app h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: #0f172a;
+}
+
+.ljat-app h1 { font-size: 1.875rem; }
+.ljat-app h2 { font-size: 1.5rem; }
+.ljat-app h3 { font-size: 1.25rem; }
+.ljat-app h4 { font-size: 1.125rem; }
+
+.ljat-app p {
+  margin-bottom: 1rem;
+  color: #475569;
+}
+
+.ljat-app a {
+  color: #3b82f6;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ljat-app a:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.ljat-app ul,
+.ljat-app ol {
+  list-style: none;
+}
+
+.ljat-app img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ljat-app input,
+.ljat-app textarea,
+.ljat-app select,
+.ljat-app button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+.ljat-app button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.ljat-app table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Utility Classes */
+.ljat-app .text-center { text-align: center; }
+.ljat-app .text-right { text-align: right; }
+.ljat-app .text-muted { color: #94a3b8; }
+.ljat-app .text-success { color: #22c55e; }
+.ljat-app .text-warning { color: #f59e0b; }
+.ljat-app .text-danger { color: #ef4444; }
+.ljat-app .text-info { color: #3b82f6; }
+
+.ljat-app .font-bold { font-weight: 700; }
+.ljat-app .font-semibold { font-weight: 600; }
+.ljat-app .font-medium { font-weight: 500; }
+
+.ljat-app .mt-1 { margin-top: 0.25rem; }
+.ljat-app .mt-2 { margin-top: 0.5rem; }
+.ljat-app .mt-3 { margin-top: 0.75rem; }
+.ljat-app .mt-4 { margin-top: 1rem; }
+.ljat-app .mt-6 { margin-top: 1.5rem; }
+
+.ljat-app .mb-1 { margin-bottom: 0.25rem; }
+.ljat-app .mb-2 { margin-bottom: 0.5rem; }
+.ljat-app .mb-3 { margin-bottom: 0.75rem; }
+.ljat-app .mb-4 { margin-bottom: 1rem; }
+.ljat-app .mb-6 { margin-bottom: 1.5rem; }
+
+.ljat-app .p-2 { padding: 0.5rem; }
+.ljat-app .p-3 { padding: 0.75rem; }
+.ljat-app .p-4 { padding: 1rem; }
+.ljat-app .p-6 { padding: 1.5rem; }
+
+.ljat-app .flex { display: flex; }
+.ljat-app .flex-col { flex-direction: column; }
+.ljat-app .items-center { align-items: center; }
+.ljat-app .justify-between { justify-content: space-between; }
+.ljat-app .justify-center { justify-content: center; }
+.ljat-app .gap-2 { gap: 0.5rem; }
+.ljat-app .gap-3 { gap: 0.75rem; }
+.ljat-app .gap-4 { gap: 1rem; }
+
+.ljat-app .hidden { display: none !important; }
+.ljat-app .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

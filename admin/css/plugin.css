@@ -1,0 +1,713 @@
+/* ============================================
+   PLUGIN.CSS - Job Application Tracker Styles
+   Scoped under .ljat-app to avoid WP conflicts
+   ============================================ */
+
+/* Ensure dashicons render on scoped elements.
+   base.css resets font-family on buttons, which would
+   otherwise override the dashicons icon font. */
+.ljat-app .dashicons,
+.ljat-app .dashicons::before {
+  font-family: dashicons;
+  line-height: 1;
+}
+
+/* ---- Layout ---- */
+.ljat-app .jat-wrapper {
+  max-width: none;
+  margin: 20px auto;
+  padding: 24px;
+}
+
+.ljat-app .jat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.ljat-app .jat-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ljat-app .jat-header h1 .jat-icon {
+  width: 32px;
+  height: 32px;
+  background-color: #84cc16;
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* ---- Stats Cards ---- */
+.ljat-app .jat-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.ljat-app .jat-stat-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: box-shadow 0.2s ease;
+}
+
+.ljat-app .jat-stat-card:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.ljat-app .jat-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.ljat-app .jat-stat-icon.blue   { background: #dbeafe; color: #3b82f6; }
+.ljat-app .jat-stat-icon.green  { background: #dcfce7; color: #22c55e; }
+.ljat-app .jat-stat-icon.amber  { background: #fef3c7; color: #f59e0b; }
+.ljat-app .jat-stat-icon.red    { background: #fee2e2; color: #ef4444; }
+
+.ljat-app .jat-stat-info h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.ljat-app .jat-stat-info p {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin-bottom: 0;
+  margin-top: 4px;
+}
+
+/* ---- Toolbar ---- */
+.ljat-app .jat-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.ljat-app .jat-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.ljat-app .jat-toolbar .jat-search-box .jat-input,
+.ljat-app .jat-toolbar .jat-select,
+.ljat-app .jat-toolbar .jat-btn-sm {
+  height: 42px;
+}
+
+/* ---- Buttons ---- */
+.ljat-app .jat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.ljat-app .jat-btn:hover {
+  text-decoration: none;
+}
+
+.ljat-app .jat-btn-primary {
+  background-color: #84cc16;
+  color: #fff;
+  border-color: #84cc16;
+}
+
+.ljat-app .jat-btn-primary:hover {
+  background-color: #65a30d;
+  border-color: #65a30d;
+  color: #fff;
+}
+
+.ljat-app .jat-btn-secondary {
+  background-color: #fff;
+  color: #475569;
+  border-color: #e2e8f0;
+}
+
+.ljat-app .jat-btn-secondary:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+.ljat-app .jat-btn-danger {
+  background-color: #fff;
+  color: #ef4444;
+  border-color: #fecaca;
+}
+
+.ljat-app .jat-btn-danger:hover {
+  background-color: #fef2f2;
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.ljat-app .jat-btn-sm {
+  padding: 5px 10px;
+  font-size: 0.8125rem;
+  border-radius: 6px;
+}
+
+.ljat-app .jat-btn-icon {
+  padding: 8px;
+  border-radius: 8px;
+  color: #64748b;
+  width: auto;
+  height: auto;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.ljat-app .jat-btn-icon:hover {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+/* ---- Form Elements ---- */
+.ljat-app .jat-form-group {
+  margin-bottom: 16px;
+}
+
+.ljat-app .jat-form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.ljat-app .jat-form-group label .required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.ljat-app .jat-input,
+.ljat-app .jat-select,
+.ljat-app .jat-textarea {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 0.875rem;
+  color: #1e293b;
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.ljat-app .jat-input:focus,
+.ljat-app .jat-select:focus,
+.ljat-app .jat-textarea:focus {
+  border-color: #84cc16;
+  box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.15);
+}
+
+.ljat-app .jat-input::placeholder,
+.ljat-app .jat-textarea::placeholder {
+  color: #cbd5e1;
+}
+
+.ljat-app .jat-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.ljat-app .jat-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+.ljat-app .jat-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ---- Search & Filter ---- */
+.ljat-app .jat-search-box {
+  position: relative;
+}
+
+.ljat-app .jat-search-box .jat-input {
+  padding-left: 36px;
+  width: 320px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 0.9375rem;
+}
+
+.ljat-app .jat-search-box .jat-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 18px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.ljat-app .jat-filter-select {
+  min-width: 150px;
+}
+
+/* ---- Table ---- */
+.ljat-app .jat-table-wrapper {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ljat-app .jat-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ljat-app .jat-table thead {
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ljat-app .jat-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ljat-app .jat-table th:hover {
+  color: #334155;
+}
+
+.ljat-app .jat-table th .sort-icon {
+  margin-left: 4px;
+  font-size: 16px;
+  width: auto;
+  height: auto;
+  line-height: 1;
+  opacity: 0.4;
+}
+
+.ljat-app .jat-table th.sorted .sort-icon {
+  opacity: 1;
+  color: #84cc16;
+}
+
+.ljat-app .jat-table td {
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.ljat-app .jat-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.ljat-app .jat-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.ljat-app .jat-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ljat-app .jat-table-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ---- Status Badge ---- */
+.ljat-app .jat-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.ljat-app .jat-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.ljat-app .jat-status-applied   { background: #dbeafe; color: #1d4ed8; }
+.ljat-app .jat-status-applied .jat-status-dot   { background: #3b82f6; }
+
+.ljat-app .jat-status-interview { background: #fef3c7; color: #b45309; }
+.ljat-app .jat-status-interview .jat-status-dot { background: #f59e0b; }
+
+.ljat-app .jat-status-offer     { background: #dcfce7; color: #15803d; }
+.ljat-app .jat-status-offer .jat-status-dot     { background: #22c55e; }
+
+.ljat-app .jat-status-rejected  { background: #fee2e2; color: #b91c1c; }
+.ljat-app .jat-status-rejected .jat-status-dot  { background: #ef4444; }
+
+.ljat-app .jat-status-saved     { background: #f1f5f9; color: #475569; }
+.ljat-app .jat-status-saved .jat-status-dot     { background: #94a3b8; }
+
+.ljat-app .jat-status-withdrawn { background: #ede9fe; color: #6d28d9; }
+.ljat-app .jat-status-withdrawn .jat-status-dot { background: #8b5cf6; }
+
+/* ---- Priority Badge ---- */
+.ljat-app .jat-priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.ljat-app .jat-priority-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.ljat-app .jat-priority-high   .jat-priority-dot { background: #ef4444; }
+.ljat-app .jat-priority-medium .jat-priority-dot { background: #f59e0b; }
+.ljat-app .jat-priority-low    .jat-priority-dot { background: #22c55e; }
+
+/* ---- Modal ---- */
+.ljat-app .jat-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.ljat-app .jat-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ljat-app .jat-modal {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.25s ease;
+}
+
+.ljat-app .jat-modal-overlay.active .jat-modal {
+  transform: translateY(0) scale(1);
+}
+
+.ljat-app .jat-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ljat-app .jat-modal-header h2 {
+  font-size: 1.125rem;
+}
+
+.ljat-app .jat-modal-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 18px;
+  transition: all 0.15s ease;
+}
+
+.ljat-app .jat-modal-close:hover {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+.ljat-app .jat-modal-body {
+  padding: 24px;
+}
+
+.ljat-app .jat-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* ---- Empty State ---- */
+.ljat-app .jat-empty-state {
+  text-align: center;
+  padding: 60px 24px;
+}
+
+.ljat-app .jat-empty-state-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  background-color: #f1f5f9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  line-height: 1;
+  color: #94a3b8;
+}
+
+.ljat-app .jat-empty-state h3 {
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.ljat-app .jat-empty-state p {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  max-width: 320px;
+  margin: 0 auto 20px;
+}
+
+/* ---- Pagination ---- */
+.ljat-app .jat-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-top: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.ljat-app .jat-pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ljat-app .jat-page-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.ljat-app .jat-page-btn:hover {
+  background-color: #e2e8f0;
+  color: #334155;
+  text-decoration: none;
+}
+
+.ljat-app .jat-page-btn.active {
+  background-color: #84cc16;
+  color: #fff;
+}
+
+/* ---- Tabs ---- */
+.ljat-app .jat-tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.ljat-app .jat-tab {
+  padding: 10px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.ljat-app .jat-tab:hover {
+  color: #334155;
+  text-decoration: none;
+}
+
+.ljat-app .jat-tab.active {
+  color: #84cc16;
+  border-bottom-color: #84cc16;
+}
+
+/* ---- Toast / Notifications ---- */
+.ljat-app .jat-toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 11000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ljat-app .jat-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  font-size: 0.875rem;
+  min-width: 280px;
+  animation: jat-slide-in 0.3s ease;
+}
+
+.ljat-app .jat-toast-success { border-left: 3px solid #22c55e; }
+.ljat-app .jat-toast-error   { border-left: 3px solid #ef4444; }
+.ljat-app .jat-toast-info    { border-left: 3px solid #84cc16; }
+
+@keyframes jat-slide-in {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ---- Detail View ---- */
+.ljat-app .jat-detail-section {
+  margin-bottom: 20px;
+}
+
+.ljat-app .jat-detail-section h3 {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ljat-app .jat-detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.875rem;
+}
+
+.ljat-app .jat-detail-row .label {
+  color: #64748b;
+}
+
+.ljat-app .jat-detail-row .value {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .ljat-app .jat-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .ljat-app .jat-wrapper {
+    padding: 16px;
+  }
+
+  .ljat-app .jat-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .ljat-app .jat-toolbar {
+    align-items: center;
+  }
+
+  .ljat-app .jat-toolbar-left {
+    flex-wrap: nowrap;
+  }
+
+  .ljat-app .jat-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .ljat-app .jat-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .ljat-app .jat-modal {
+    margin: 16px;
+    max-height: calc(100vh - 32px);
+  }
+
+  .ljat-app .jat-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
