@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class LJAT_Deactivator {
+class OJAT_Deactivator {
 
 	public static function deactivate() {
 		flush_rewrite_rules();

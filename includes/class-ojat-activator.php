@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class LJAT_Activator {
+class OJAT_Activator {
 
 	public static function activate() {
 		self::create_table();
@@ -13,7 +13,7 @@ class LJAT_Activator {
 	private static function create_table() {
 		global $wpdb;
 
-		$table_name      = $wpdb->prefix . 'ljat_applications';
+		$table_name      = $wpdb->prefix . 'ojat_applications';
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE {$table_name} (
@@ -40,6 +40,6 @@ class LJAT_Activator {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
-		update_option( 'ljat_db_version', LJAT_VERSION );
+		update_option( 'ojat_db_version', OJAT_VERSION );
 	}
 }

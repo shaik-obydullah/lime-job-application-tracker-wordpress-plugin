@@ -1,0 +1,366 @@
+# Copyright (C) 2026 Obydullah Job Application Tracker
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Obydullah Job Application Tracker 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/obydullah-job-application-tracker\n"
+"POT-Creation-Date: 2026-09-13 23:54\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Domain: obydullah-job-application-tracker\n"
+
+#: admin/partials/dashboard.php:133
+msgid "Actions"
+msgstr ""
+
+#: includes/class-ojat-admin.php:38
+#: includes/class-ojat-admin.php:39
+#: admin/partials/dashboard.php:38
+#: admin/partials/dashboard.php:155
+msgid "Add Application"
+msgstr ""
+
+#: admin/partials/application-form.php:12
+msgid "Add New Application"
+msgstr ""
+
+#: admin/partials/dashboard.php:78
+msgid "All Jobs"
+msgstr ""
+
+#: admin/partials/dashboard.php:108
+msgid "All Priority"
+msgstr ""
+
+#: admin/partials/dashboard.php:102
+msgid "All Status"
+msgstr ""
+
+#: admin/partials/dashboard.php:230
+msgid "Application Details"
+msgstr ""
+
+#: includes/class-ojat-ajax.php:114
+msgid "Application deleted."
+msgstr ""
+
+#: includes/class-ojat-ajax.php:138
+msgid "Application not found."
+msgstr ""
+
+#: includes/class-ojat-ajax.php:85
+msgid "Application saved."
+msgstr ""
+
+#: admin/js/admin.js:10
+#: admin/partials/application-form.php:18
+#: admin/partials/dashboard.php:14
+msgid "Applied"
+msgstr ""
+
+#: admin/js/admin.js:218
+msgid "Are you sure you want to delete this application?"
+msgstr ""
+
+#: admin/partials/application-form.php:123
+msgid "Cancel"
+msgstr ""
+
+#: admin/partials/dashboard.php:239
+msgid "Close"
+msgstr ""
+
+#: admin/js/admin.js:123
+#: admin/partials/application-form.php:44
+#: admin/partials/dashboard.php:127
+msgid "Company"
+msgstr ""
+
+#: includes/class-ojat-ajax.php:69
+msgid "Company and role are required."
+msgstr ""
+
+#: admin/js/admin.js:173
+msgid "Contact"
+msgstr ""
+
+#: admin/partials/application-form.php:88
+msgid "Contact Email"
+msgstr ""
+
+#: admin/partials/application-form.php:83
+msgid "Contact Person"
+msgstr ""
+
+#: admin/js/admin.js:153
+msgid "Current"
+msgstr ""
+
+#: admin/js/admin.js:165
+#: admin/partials/application-form.php:70
+#: admin/partials/dashboard.php:132
+msgid "Date Applied"
+msgstr ""
+
+#: admin/js/admin.js:303
+#: admin/partials/dashboard.php:185
+#: admin/partials/dashboard.php:237
+msgid "Delete"
+msgstr ""
+
+#: admin/js/admin.js:301
+#: admin/partials/dashboard.php:184
+#: admin/partials/dashboard.php:238
+msgid "Edit"
+msgstr ""
+
+#: admin/partials/application-form.php:12
+msgid "Edit Application"
+msgstr ""
+
+#: admin/js/admin.js:183
+msgid "Email"
+msgstr ""
+
+#: includes/class-ojat-ajax.php:116
+msgid "Failed to delete."
+msgstr ""
+
+#: includes/class-ojat-ajax.php:90
+msgid "Failed to save application."
+msgstr ""
+
+#: admin/partials/dashboard.php:114
+msgid "Filter"
+msgstr ""
+
+#: admin/partials/application-form.php:115
+#: admin/partials/dashboard.php:109
+msgid "High"
+msgstr ""
+
+#: admin/js/admin.js:11
+#: admin/partials/application-form.php:19
+#: admin/partials/dashboard.php:15
+msgid "Interview"
+msgstr ""
+
+#: admin/partials/application-form.php:96
+msgid "Interview prep, follow-up dates, etc."
+msgstr ""
+
+#: admin/partials/dashboard.php:55
+#: admin/partials/dashboard.php:86
+msgid "Interviews"
+msgstr ""
+
+#: includes/class-ojat-ajax.php:108
+#: includes/class-ojat-ajax.php:130
+msgid "Invalid ID."
+msgstr ""
+
+#: admin/js/admin.js:122
+msgid "Job Information"
+msgstr ""
+
+#: includes/class-ojat-admin.php:27
+#: includes/class-ojat-admin.php:28
+msgid "Job Tracker"
+msgstr ""
+
+#: admin/partials/application-form.php:62
+msgid "Job URL"
+msgstr ""
+
+#: admin/js/admin.js:76
+#: admin/js/admin.js:364
+msgid "Loading..."
+msgstr ""
+
+#: admin/js/admin.js:129
+#: admin/partials/application-form.php:57
+#: admin/partials/dashboard.php:129
+msgid "Location"
+msgstr ""
+
+#: admin/partials/application-form.php:116
+#: admin/partials/dashboard.php:111
+msgid "Low"
+msgstr ""
+
+#: admin/partials/application-form.php:114
+#: admin/partials/dashboard.php:110
+msgid "Medium"
+msgstr ""
+
+#: admin/js/admin.js:177
+msgid "Name"
+msgstr ""
+
+#: admin/js/admin.js:312
+#: admin/partials/dashboard.php:152
+msgid "No applications found"
+msgstr ""
+
+#: admin/js/admin.js:105
+msgid "Not found."
+msgstr ""
+
+#: admin/js/admin.js:197
+#: admin/partials/application-form.php:95
+msgid "Notes"
+msgstr ""
+
+#: admin/partials/dashboard.php:35
+msgid "Obydullah Job Application Tracker"
+msgstr ""
+
+#: admin/js/admin.js:12
+#: admin/partials/application-form.php:20
+#: admin/partials/dashboard.php:16
+msgid "Offer"
+msgstr ""
+
+#: admin/partials/dashboard.php:62
+#: admin/partials/dashboard.php:90
+msgid "Offers"
+msgstr ""
+
+#: admin/js/admin.js:159
+#: admin/partials/application-form.php:112
+#: admin/partials/dashboard.php:131
+msgid "Priority"
+msgstr ""
+
+#: admin/partials/application-form.php:84
+msgid "Recruiter / Hiring Manager name"
+msgstr ""
+
+#: admin/js/admin.js:13
+#: admin/partials/application-form.php:21
+#: admin/partials/dashboard.php:17
+#: admin/partials/dashboard.php:69
+msgid "Rejected"
+msgstr ""
+
+#: admin/partials/dashboard.php:117
+msgid "Reset"
+msgstr ""
+
+#: admin/js/admin.js:126
+#: admin/partials/application-form.php:49
+#: admin/partials/dashboard.php:128
+msgid "Role"
+msgstr ""
+
+#: admin/js/admin.js:142
+msgid "Salary"
+msgstr ""
+
+#: admin/partials/application-form.php:75
+msgid "Salary Range"
+msgstr ""
+
+#: admin/js/admin.js:37
+#: admin/partials/application-form.php:126
+msgid "Save Application"
+msgstr ""
+
+#: admin/js/admin.js:9
+#: admin/partials/application-form.php:17
+#: admin/partials/dashboard.php:13
+#: admin/partials/dashboard.php:82
+msgid "Saved"
+msgstr ""
+
+#: admin/js/admin.js:44
+msgid "Saving..."
+msgstr ""
+
+#: admin/partials/dashboard.php:99
+msgid "Search by company or role..."
+msgstr ""
+
+#: includes/class-ojat-ajax.php:51
+msgid "Security check failed."
+msgstr ""
+
+#: admin/partials/application-form.php:16
+msgid "Select status"
+msgstr ""
+
+#: admin/js/admin.js:326
+#: admin/partials/dashboard.php:203
+msgid "Showing %1$d - %2$d of %3$d applications"
+msgstr ""
+
+#: admin/js/admin.js:58
+#: admin/js/admin.js:63
+#: admin/js/admin.js:238
+#: admin/js/admin.js:262
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#: admin/partials/dashboard.php:153
+msgid "Start tracking your job applications by adding your first one."
+msgstr ""
+
+#: admin/js/admin.js:152
+#: admin/partials/application-form.php:101
+#: admin/partials/dashboard.php:130
+msgid "Status"
+msgstr ""
+
+#: admin/partials/dashboard.php:48
+msgid "Total Applications"
+msgstr ""
+
+#: admin/js/admin.js:313
+msgid "Try adjusting your filters or add a new application."
+msgstr ""
+
+#: includes/class-ojat-ajax.php:62
+#: includes/class-ojat-ajax.php:101
+msgid "Unauthorized."
+msgstr ""
+
+#: admin/partials/application-form.php:126
+msgid "Update Application"
+msgstr ""
+
+#: admin/js/admin.js:299
+#: admin/partials/dashboard.php:183
+msgid "View"
+msgstr ""
+
+#: admin/js/admin.js:137
+msgid "View Listing"
+msgstr ""
+
+#: admin/js/admin.js:14
+#: admin/partials/application-form.php:22
+#: admin/partials/dashboard.php:18
+msgid "Withdrawn"
+msgstr ""
+
+#: admin/partials/application-form.php:76
+msgid "e.g. $120k - $160k"
+msgstr ""
+
+#: admin/partials/application-form.php:50
+msgid "e.g. Frontend Engineer"
+msgstr ""
+
+#: admin/partials/application-form.php:45
+msgid "e.g. Google"
+msgstr ""
+
+#: admin/partials/application-form.php:58
+msgid "e.g. Remote / New York, NY"
+msgstr ""
+
+#: admin/partials/application-form.php:89
+msgid "email@company.com"
+msgstr ""

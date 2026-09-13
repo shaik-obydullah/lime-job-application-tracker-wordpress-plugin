@@ -1,13 +1,38 @@
 <?php
+/**
+ * Database abstraction for job applications.
+ *
+ * @package obydullah-job-application-tracker
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class LJAT_Database {
+/**
+ * Handles all database operations for the plugin.
+ */
+class OJAT_Database {
 
+	/**
+	 * Singleton instance.
+	 *
+	 * @var OJAT_Database|null
+	 */
 	private static $instance = null;
+
+	/**
+	 * Database table name (prefixed).
+	 *
+	 * @var string
+	 */
 	private $table_name;
 
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @return OJAT_Database
+	 */
 	public static function instance() {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
@@ -15,17 +40,28 @@ class LJAT_Database {
 		return self::$instance;
 	}
 
+	/**
+	 * Private constructor to prevent direct instantiation.
+	 */
 	private function __construct() {
 		global $wpdb;
-		$this->table_name = $wpdb->prefix . 'ljat_applications';
+		$this->table_name = $wpdb->prefix . 'ojat_applications';
 	}
 
+	/**
+	 * Get the database table name.
+	 *
+	 * @return string
+	 */
 	public function get_table_name() {
 		return $this->table_name;
 	}
 
 	/**
 	 * Get all applications with optional filters and pagination.
+	 *
+	 * @param array $args Query arguments: status, priority, search,
+	 *                    per_page, page.
 	 */
 	public function get_applications( $args = array() ) {
 		global $wpdb;
@@ -34,69 +70,190 @@ class LJAT_Database {
 			'status'   => '',
 			'priority' => '',
 			'search'   => '',
-			'orderby'  => 'created_at',
-			'order'    => 'DESC',
 			'per_page' => 10,
 			'page'     => 1,
 		);
 
-		$args  = wp_parse_args( $args, $defaults );
-		$where = array( '1=1' );
-		$values = array();
+		$args = wp_parse_args( $args, $defaults );
 
-		if ( ! empty( $args['status'] ) ) {
-			$where[]  = 'status = %s';
-			$values[] = $args['status'];
-		}
+		$status   = sanitize_key( $args['status'] );
+		$priority = sanitize_key( $args['priority'] );
+		$search   = sanitize_text_field( $args['search'] );
+		$like     = ( '' !== $search ) ? '%' . $wpdb->esc_like( $search ) . '%' : '';
 
-		if ( ! empty( $args['priority'] ) ) {
-			$where[]  = 'priority = %s';
-			$values[] = $args['priority'];
-		}
+		$per_page = max( 1, (int) $args['per_page'] );
+		$page     = max( 1, (int) $args['page'] );
+		$offset   = ( $page - 1 ) * $per_page;
 
-		if ( ! empty( $args['search'] ) ) {
-			$where[]  = '(company LIKE %s OR role_title LIKE %s OR location LIKE %s)';
-			$like     = '%' . $wpdb->esc_like( $args['search'] ) . '%';
-			$values[] = $like;
-			$values[] = $like;
-			$values[] = $like;
-		}
+		$has_status   = ( '' !== $status );
+		$has_priority = ( '' !== $priority );
+		$has_search   = ( '' !== $like );
 
-		$where_clause = implode( ' AND ', $where );
+		if ( $has_status && $has_priority && $has_search ) {
+			$total = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}ojat_applications WHERE status = %s AND priority = %s AND (company LIKE %s OR role_title LIKE %s OR location LIKE %s)",
+					$status,
+					$priority,
+					$like,
+					$like,
+					$like
+				)
+			);
 
-		$allowed_orderby = array( 'company', 'role_title', 'location', 'date_applied', 'created_at', 'status', 'priority' );
-		$orderby         = in_array( $args['orderby'], $allowed_orderby, true ) ? $args['orderby'] : 'created_at';
-		$order           = 'ASC' === strtoupper( $args['order'] ) ? 'ASC' : 'DESC';
+			$items = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT * FROM {$wpdb->prefix}ojat_applications WHERE status = %s AND priority = %s AND (company LIKE %s OR role_title LIKE %s OR location LIKE %s) ORDER BY created_at DESC LIMIT %d OFFSET %d",
+					$status,
+					$priority,
+					$like,
+					$like,
+					$like,
+					$per_page,
+					$offset
+				)
+			);
+		} elseif ( $has_status && $has_priority ) {
+			$total = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}ojat_applications WHERE status = %s AND priority = %s",
+					$status,
+					$priority
+				)
+			);
 
-		$offset = ( max( 1, (int) $args['page'] ) - 1 ) * (int) $args['per_page'];
+			$items = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT * FROM {$wpdb->prefix}ojat_applications WHERE status = %s AND priority = %s ORDER BY created_at DESC LIMIT %d OFFSET %d",
+					$status,
+					$priority,
+					$per_page,
+					$offset
+				)
+			);
+		} elseif ( $has_status && $has_search ) {
+			$total = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}ojat_applications WHERE status = %s AND (company LIKE %s OR role_title LIKE %s OR location LIKE %s)",
+					$status,
+					$like,
+					$like,
+					$like
+				)
+			);
 
-		// Total count query.
-		if ( ! empty( $values ) ) {
-			$count_query = $wpdb->prepare( "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}", $values ); // phpcs:ignore
+			$items = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT * FROM {$wpdb->prefix}ojat_applications WHERE status = %s AND (company LIKE %s OR role_title LIKE %s OR location LIKE %s) ORDER BY created_at DESC LIMIT %d OFFSET %d",
+					$status,
+					$like,
+					$like,
+					$like,
+					$per_page,
+					$offset
+				)
+			);
+		} elseif ( $has_priority && $has_search ) {
+			$total = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}ojat_applications WHERE priority = %s AND (company LIKE %s OR role_title LIKE %s OR location LIKE %s)",
+					$priority,
+					$like,
+					$like,
+					$like
+				)
+			);
+
+			$items = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT * FROM {$wpdb->prefix}ojat_applications WHERE priority = %s AND (company LIKE %s OR role_title LIKE %s OR location LIKE %s) ORDER BY created_at DESC LIMIT %d OFFSET %d",
+					$priority,
+					$like,
+					$like,
+					$like,
+					$per_page,
+					$offset
+				)
+			);
+		} elseif ( $has_status ) {
+			$total = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}ojat_applications WHERE status = %s",
+					$status
+				)
+			);
+
+			$items = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT * FROM {$wpdb->prefix}ojat_applications WHERE status = %s ORDER BY created_at DESC LIMIT %d OFFSET %d",
+					$status,
+					$per_page,
+					$offset
+				)
+			);
+		} elseif ( $has_priority ) {
+			$total = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}ojat_applications WHERE priority = %s",
+					$priority
+				)
+			);
+
+			$items = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT * FROM {$wpdb->prefix}ojat_applications WHERE priority = %s ORDER BY created_at DESC LIMIT %d OFFSET %d",
+					$priority,
+					$per_page,
+					$offset
+				)
+			);
+		} elseif ( $has_search ) {
+			$total = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}ojat_applications WHERE (company LIKE %s OR role_title LIKE %s OR location LIKE %s)",
+					$like,
+					$like,
+					$like
+				)
+			);
+
+			$items = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT * FROM {$wpdb->prefix}ojat_applications WHERE (company LIKE %s OR role_title LIKE %s OR location LIKE %s) ORDER BY created_at DESC LIMIT %d OFFSET %d",
+					$like,
+					$like,
+					$like,
+					$per_page,
+					$offset
+				)
+			);
 		} else {
-			$count_query = "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}";
+			$total = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				"SELECT COUNT(*) FROM {$wpdb->prefix}ojat_applications"
+			);
+
+			$items = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare(
+					"SELECT * FROM {$wpdb->prefix}ojat_applications ORDER BY created_at DESC LIMIT %d OFFSET %d",
+					$per_page,
+					$offset
+				)
+			);
 		}
-		$total = (int) $wpdb->get_var( $count_query ); // phpcs:ignore
-
-		// Data query.
-		$query = $wpdb->prepare(
-			"SELECT * FROM {$this->table_name} WHERE {$where_clause} ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d",
-			array_merge( $values, array( (int) $args['per_page'], $offset ) )
-		); // phpcs:ignore
-
-		$results = $wpdb->get_results( $query ); // phics:ignore
 
 		return array(
-			'items'       => $results ? $results : array(),
+			'items'       => $items,
 			'total'       => $total,
-			'per_page'    => (int) $args['per_page'],
-			'total_pages' => (int) ceil( $total / (int) $args['per_page'] ),
-			'page'        => (int) $args['page'],
+			'per_page'    => $per_page,
+			'total_pages' => (int) ceil( $total / $per_page ),
+			'page'        => $page,
 		);
 	}
 
 	/**
 	 * Get a single application by ID.
+	 *
+	 * @param int $id Application ID.
 	 */
 	public function get_application( $id ) {
 		global $wpdb;
@@ -107,12 +264,14 @@ class LJAT_Database {
 		}
 
 		return $wpdb->get_row( // phpcs:ignore
-			$wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE id = %d", $id )
+			$wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ojat_applications WHERE id = %d", $id )
 		);
 	}
 
 	/**
 	 * Insert a new application.
+	 *
+	 * @param array $data Application data to insert.
 	 */
 	public function insert_application( $data ) {
 		global $wpdb;
@@ -131,6 +290,9 @@ class LJAT_Database {
 
 	/**
 	 * Update an existing application.
+	 *
+	 * @param int   $id   Application ID.
+	 * @param array $data Application data to update.
 	 */
 	public function update_application( $id, $data ) {
 		global $wpdb;
@@ -156,6 +318,8 @@ class LJAT_Database {
 
 	/**
 	 * Delete an application.
+	 *
+	 * @param int $id Application ID.
 	 */
 	public function delete_application( $id ) {
 		global $wpdb;
@@ -181,7 +345,7 @@ class LJAT_Database {
 		global $wpdb;
 
 		$results = $wpdb->get_results( // phpcs:ignore
-			"SELECT status, COUNT(*) as count FROM {$this->table_name} GROUP BY status"
+			"SELECT status, COUNT(*) as count FROM {$wpdb->prefix}ojat_applications GROUP BY status"
 		);
 
 		$counts = array(
@@ -208,6 +372,8 @@ class LJAT_Database {
 
 	/**
 	 * Sanitize input data.
+	 *
+	 * @param array $data Raw application data.
 	 */
 	private function sanitize_data( $data ) {
 		$sanitized = array();

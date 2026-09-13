@@ -1,12 +1,31 @@
 <?php
+/**
+ * AJAX handlers for job applications.
+ *
+ * @package obydullah-job-application-tracker
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class LJAT_Ajax {
+/**
+ * Handles all AJAX requests for the plugin.
+ */
+class OJAT_Ajax {
 
+	/**
+	 * Singleton instance.
+	 *
+	 * @var OJAT_Ajax|null
+	 */
 	private static $instance = null;
 
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @return OJAT_Ajax
+	 */
 	public static function instance() {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
@@ -14,19 +33,22 @@ class LJAT_Ajax {
 		return self::$instance;
 	}
 
+	/**
+	 * Register AJAX actions.
+	 */
 	private function __construct() {
-		add_action( 'wp_ajax_ljat_save_application', array( $this, 'save_application' ) );
-		add_action( 'wp_ajax_ljat_delete_application', array( $this, 'delete_application' ) );
-		add_action( 'wp_ajax_ljat_get_application', array( $this, 'get_application' ) );
-		add_action( 'wp_ajax_ljat_get_applications', array( $this, 'get_applications' ) );
+		add_action( 'wp_ajax_ojat_save_application', array( $this, 'save_application' ) );
+		add_action( 'wp_ajax_ojat_delete_application', array( $this, 'delete_application' ) );
+		add_action( 'wp_ajax_ojat_get_application', array( $this, 'get_application' ) );
+		add_action( 'wp_ajax_ojat_get_applications', array( $this, 'get_applications' ) );
 	}
 
 	/**
 	 * Verify nonce and send JSON response.
 	 */
 	private function verify_nonce() {
-		if ( ! check_ajax_referer( 'ljat_nonce', 'nonce' ) ) {
-			wp_send_json_error( array( 'message' => 'Security check failed.' ), 403 );
+		if ( ! check_ajax_referer( 'ojat_nonce', 'nonce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'obydullah-job-application-tracker' ) ), 403 );
 		}
 	}
 
@@ -37,14 +59,14 @@ class LJAT_Ajax {
 		$this->verify_nonce();
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => 'Unauthorized.' ), 403 );
+			wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'obydullah-job-application-tracker' ) ), 403 );
 		}
 
-		$db   = LJAT_Database::instance();
+		$db   = OJAT_Database::instance();
 		$data = $_POST['data'] ?? array(); // phpcs:ignore
 
 		if ( empty( $data['company'] ) || empty( $data['role_title'] ) ) {
-			wp_send_json_error( array( 'message' => 'Company and role are required.' ) );
+			wp_send_json_error( array( 'message' => __( 'Company and role are required.', 'obydullah-job-application-tracker' ) ) );
 		}
 
 		$id = isset( $data['id'] ) ? absint( $data['id'] ) : 0;
@@ -58,9 +80,14 @@ class LJAT_Ajax {
 
 		if ( $result ) {
 			$item = $db->get_application( $id );
-			wp_send_json_success( array( 'message' => 'Application saved.', 'item' => $item ) );
+			wp_send_json_success(
+				array(
+					'message' => __( 'Application saved.', 'obydullah-job-application-tracker' ),
+					'item'    => $item,
+				)
+			);
 		} else {
-			wp_send_json_error( array( 'message' => 'Failed to save application.' ) );
+			wp_send_json_error( array( 'message' => __( 'Failed to save application.', 'obydullah-job-application-tracker' ) ) );
 		}
 	}
 
@@ -71,22 +98,22 @@ class LJAT_Ajax {
 		$this->verify_nonce();
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => 'Unauthorized.' ), 403 );
+			wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'obydullah-job-application-tracker' ) ), 403 );
 		}
 
-		$db = LJAT_Database::instance();
+		$db = OJAT_Database::instance();
 		$id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0; // phpcs:ignore
 
 		if ( ! $id ) {
-			wp_send_json_error( array( 'message' => 'Invalid ID.' ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid ID.', 'obydullah-job-application-tracker' ) ) );
 		}
 
 		$result = $db->delete_application( $id );
 
 		if ( $result ) {
-			wp_send_json_success( array( 'message' => 'Application deleted.' ) );
+			wp_send_json_success( array( 'message' => __( 'Application deleted.', 'obydullah-job-application-tracker' ) ) );
 		} else {
-			wp_send_json_error( array( 'message' => 'Failed to delete.' ) );
+			wp_send_json_error( array( 'message' => __( 'Failed to delete.', 'obydullah-job-application-tracker' ) ) );
 		}
 	}
 
@@ -96,11 +123,11 @@ class LJAT_Ajax {
 	public function get_application() {
 		$this->verify_nonce();
 
-		$db = LJAT_Database::instance();
+		$db = OJAT_Database::instance();
 		$id = isset( $_GET['id'] ) ? absint( $_GET['id'] ) : 0; // phpcs:ignore
 
 		if ( ! $id ) {
-			wp_send_json_error( array( 'message' => 'Invalid ID.' ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid ID.', 'obydullah-job-application-tracker' ) ) );
 		}
 
 		$item = $db->get_application( $id );
@@ -108,7 +135,7 @@ class LJAT_Ajax {
 		if ( $item ) {
 			wp_send_json_success( array( 'item' => $item ) );
 		} else {
-			wp_send_json_error( array( 'message' => 'Application not found.' ) );
+			wp_send_json_error( array( 'message' => __( 'Application not found.', 'obydullah-job-application-tracker' ) ) );
 		}
 	}
 
@@ -118,14 +145,12 @@ class LJAT_Ajax {
 	public function get_applications() {
 		$this->verify_nonce();
 
-		$db = LJAT_Database::instance();
+		$db = OJAT_Database::instance();
 
 		$args = array(
 			'status'   => isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : '', // phpcs:ignore
 			'priority' => isset( $_GET['priority'] ) ? sanitize_text_field( wp_unslash( $_GET['priority'] ) ) : '', // phpcs:ignore
 			'search'   => isset( $_GET['search'] ) ? sanitize_text_field( wp_unslash( $_GET['search'] ) ) : '', // phpcs:ignore
-			'orderby'  => isset( $_GET['orderby'] ) ? sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) : 'created_at', // phpcs:ignore
-			'order'    => isset( $_GET['order'] ) ? sanitize_text_field( wp_unslash( $_GET['order'] ) ) : 'DESC', // phpcs:ignore
 			'per_page' => isset( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : 10, // phpcs:ignore
 			'page'     => isset( $_GET['page'] ) ? absint( $_GET['page'] ) : 1, // phpcs:ignore
 		);

@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class LJAT_Admin {
+class OJAT_Admin {
 
 	private static $instance = null;
 
@@ -24,21 +24,21 @@ class LJAT_Admin {
 	 */
 	public function register_menu() {
 		add_menu_page(
-			__( 'Job Tracker', 'lime-job-tracker' ),
-			__( 'Job Tracker', 'lime-job-tracker' ),
+			__( 'Job Tracker', 'obydullah-job-application-tracker' ),
+			__( 'Job Tracker', 'obydullah-job-application-tracker' ),
 			'manage_options',
-			'ljat-dashboard',
+			'ojat-dashboard',
 			array( $this, 'render_dashboard_page' ),
 			'dashicons-portfolio',
 			30
 		);
 
 		add_submenu_page(
-			'ljat-dashboard',
-			__( 'Add Application', 'lime-job-tracker' ),
-			__( 'Add Application', 'lime-job-tracker' ),
+			'ojat-dashboard',
+			__( 'Add Application', 'obydullah-job-application-tracker' ),
+			__( 'Add Application', 'obydullah-job-application-tracker' ),
 			'manage_options',
-			'ljat-add',
+			'ojat-add',
 			array( $this, 'render_add_edit_page' )
 		);
 	}
@@ -47,41 +47,37 @@ class LJAT_Admin {
 	 * Enqueue admin assets.
 	 */
 	public function enqueue_assets( $hook ) {
-		if ( false === strpos( $hook, 'ljat-' ) ) {
+		if ( false === strpos( $hook, 'ojat-' ) ) {
 			return;
 		}
 
 		wp_enqueue_style(
-			'ljat-base',
-			LJAT_PLUGIN_URL . 'admin/css/base.css',
+			'ojat-base',
+			OJAT_PLUGIN_URL . 'admin/css/base.css',
 			array(),
-			LJAT_VERSION
+			OJAT_VERSION
 		);
 
 		wp_enqueue_style(
-			'ljat-plugin',
-			LJAT_PLUGIN_URL . 'admin/css/plugin.css',
-			array( 'ljat-base' ),
-			LJAT_VERSION
+			'ojat-plugin',
+			OJAT_PLUGIN_URL . 'admin/css/plugin.css',
+			array( 'ojat-base' ),
+			OJAT_VERSION
 		);
 
 		wp_enqueue_script(
-			'ljat-admin',
-			LJAT_PLUGIN_URL . 'admin/js/admin.js',
-			array( 'jquery' ),
-			LJAT_VERSION,
+			'ojat-admin',
+			OJAT_PLUGIN_URL . 'admin/js/admin.js',
+			array( 'jquery', 'wp-i18n' ),
+			OJAT_VERSION,
 			true
 		);
 
-		wp_localize_script( 'ljat-admin', 'ljatAdmin', array(
+		wp_set_script_translations( 'ojat-admin', 'obydullah-job-application-tracker' );
+
+		wp_localize_script( 'ojat-admin', 'ojatAdmin', array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-			'nonce'   => wp_create_nonce( 'ljat_nonce' ),
-			'i18n'    => array(
-				'confirmDelete' => __( 'Are you sure you want to delete this application?', 'lime-job-tracker' ),
-				'saved'         => __( 'Application saved successfully.', 'lime-job-tracker' ),
-				'deleted'       => __( 'Application deleted.', 'lime-job-tracker' ),
-				'error'         => __( 'Something went wrong. Please try again.', 'lime-job-tracker' ),
-			),
+			'nonce'   => wp_create_nonce( 'ojat_nonce' ),
 		) );
 	}
 
@@ -96,18 +92,18 @@ class LJAT_Admin {
 	 * Render the main dashboard page.
 	 */
 	public function render_dashboard_page() {
-		$db      = LJAT_Database::instance();
+		$db      = OJAT_Database::instance();
 		$counts  = $db->get_status_counts();
 		$current_tab = $this->get_current_tab();
 
-		include LJAT_PLUGIN_DIR . 'admin/partials/dashboard.php';
+		include OJAT_PLUGIN_DIR . 'admin/partials/dashboard.php';
 	}
 
 	/**
 	 * Render the add/edit application page.
 	 */
 	public function render_add_edit_page() {
-		$db   = LJAT_Database::instance();
+		$db   = OJAT_Database::instance();
 		$edit = false;
 		$item = null;
 
@@ -119,6 +115,6 @@ class LJAT_Admin {
 			}
 		}
 
-		include LJAT_PLUGIN_DIR . 'admin/partials/application-form.php';
+		include OJAT_PLUGIN_DIR . 'admin/partials/application-form.php';
 	}
 }

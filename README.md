@@ -1,4 +1,4 @@
-# Lime Job Application Tracker
+# Obydullah Job Application Tracker
 
 ![WordPress](https://img.shields.io/badge/WordPress-7.0-21759b?logo=wordpress&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-8.0%2B-777bb4?logo=php&logoColor=white)
@@ -10,7 +10,7 @@
 
 ## Description
 
-**Lime Job Application Tracker** is a lightweight yet powerful WordPress plugin that turns your admin dashboard into a personal job-search command center. Log every application you send, follow up on interviews, track offers and rejections, and filter your pipeline in real time — all without leaving WordPress.
+**Obydullah Job Application Tracker** is a lightweight yet powerful WordPress plugin that turns your admin dashboard into a personal job-search command center. Log every application you send, follow up on interviews, track offers and rejections, and filter your pipeline in real time — all without leaving WordPress.
 
 Built with native WordPress APIs (custom table, admin menus, AJAX), no third-party dependencies, and a modern Tailwind-inspired UI.
 
@@ -54,11 +54,11 @@ The modal detail view showing the full record for any application.
 
 ## Installation
 
-1. Upload the `lime-job-application-tracker` folder to `/wp-content/plugins/`, or install via **Plugins → Add New**.
+1. Upload the `obydullah-job-application-tracker` folder to `/wp-content/plugins/`, or install via **Plugins → Add New**.
 2. Activate the plugin through the **Plugins** screen.
 3. A **Job Tracker** menu item appears in the admin sidebar — start adding applications.
 
-The plugin creates its own table (`wp_ljat_applications`) on activation; no configuration required.
+The plugin creates its own table (`wp_ojat_applications`) on activation; no configuration required.
 
 ## Frequently Asked Questions
 
@@ -75,9 +75,9 @@ Yes. All AJAX requests are nonce-verified, all inputs are sanitized, and every q
 
 ## Credits
 
-- **Author:** Your Name
+- **Author:** Shaik Obydullah
 - **Author URI:** [https://obydullah.com](https://obydullah.com)
-- **Plugin URI:** [Lime Job Tracker Project](https://obydullah.com/project/lime-job-tracker-wordpress-plugin/)
+- **Plugin URI:** [Obydullah Job Tracker Project](https://obydullah.com/project/obydullah-job-application-tracker-wordpress-plugin/)
 
 ## License
 
