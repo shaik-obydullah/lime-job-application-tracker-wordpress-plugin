@@ -12,15 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 $ojat_page_title = $edit ? __( 'Edit Application', 'obydullah-job-application-tracker' ) : __( 'Add New Application', 'obydullah-job-application-tracker' );
 $ojat_back_url   = admin_url( 'admin.php?page=ojat-dashboard' );
 
-$ojat_status_options = array(
-	''          => __( 'Select status', 'obydullah-job-application-tracker' ),
-	'saved'     => __( 'Saved', 'obydullah-job-application-tracker' ),
-	'applied'   => __( 'Applied', 'obydullah-job-application-tracker' ),
-	'interview' => __( 'Interview', 'obydullah-job-application-tracker' ),
-	'offer'     => __( 'Offer', 'obydullah-job-application-tracker' ),
-	'rejected'  => __( 'Rejected', 'obydullah-job-application-tracker' ),
-	'withdrawn' => __( 'Withdrawn', 'obydullah-job-application-tracker' ),
-);
+$ojat_status_options   = array( '' => __( 'Select status', 'obydullah-job-application-tracker' ) ) + ojat_get_status_labels();
+$ojat_priority_options = ojat_get_priority_labels();
 ?>
 <div class="ojat-app">
 <div class="ojat-wrapper">
@@ -111,9 +104,12 @@ $ojat_status_options = array(
 					<div class="ojat-form-group">
 						<label><?php esc_html_e( 'Priority', 'obydullah-job-application-tracker' ); ?></label>
 						<select name="priority" class="ojat-select">
-							<option value="medium" <?php selected( $edit ? $item->priority : '', 'medium' ); ?>><?php esc_html_e( 'Medium', 'obydullah-job-application-tracker' ); ?></option>
-							<option value="high" <?php selected( $edit ? $item->priority : '', 'high' ); ?>><?php esc_html_e( 'High', 'obydullah-job-application-tracker' ); ?></option>
-							<option value="low" <?php selected( $edit ? $item->priority : '', 'low' ); ?>><?php esc_html_e( 'Low', 'obydullah-job-application-tracker' ); ?></option>
+							<?php foreach ( $ojat_priority_options as $ojat_value => $ojat_label ) : ?>
+								<option value="<?php echo esc_attr( $ojat_value ); ?>"
+									<?php selected( $edit ? $item->priority : 'medium', $ojat_value ); ?>>
+									<?php echo esc_html( $ojat_label ); ?>
+								</option>
+							<?php endforeach; ?>
 						</select>
 					</div>
 				</div>

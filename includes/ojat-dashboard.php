@@ -9,21 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$ojat_status_labels = array(
-	'saved'     => __( 'Saved', 'obydullah-job-application-tracker' ),
-	'applied'   => __( 'Applied', 'obydullah-job-application-tracker' ),
-	'interview' => __( 'Interview', 'obydullah-job-application-tracker' ),
-	'offer'     => __( 'Offer', 'obydullah-job-application-tracker' ),
-	'rejected'  => __( 'Rejected', 'obydullah-job-application-tracker' ),
-	'withdrawn' => __( 'Withdrawn', 'obydullah-job-application-tracker' ),
-);
-
-$ojat_tab_status_map = array(
-	'all'       => '',
-	'saved'     => 'saved',
-	'interview' => 'interview',
-	'offers'    => 'offer',
-);
+$ojat_status_labels   = ojat_get_status_labels();
+$ojat_priority_labels = ojat_get_priority_labels();
 ?>
 <div class="ojat-app">
 <div class="ojat-wrapper">
@@ -85,8 +72,8 @@ $ojat_tab_status_map = array(
 			class="ojat-tab <?php echo 'interview' === $current_tab ? 'active' : ''; ?>">
 			<?php esc_html_e( 'Interviews', 'obydullah-job-application-tracker' ); ?>
 		</a>
-		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ojat-dashboard&tab=offers' ) ); ?>"
-			class="ojat-tab <?php echo 'offers' === $current_tab ? 'active' : ''; ?>">
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ojat-dashboard&tab=offer' ) ); ?>"
+			class="ojat-tab <?php echo 'offer' === $current_tab ? 'active' : ''; ?>">
 			<?php esc_html_e( 'Offers', 'obydullah-job-application-tracker' ); ?>
 		</a>
 	</div>
@@ -106,9 +93,9 @@ $ojat_tab_status_map = array(
 			</select>
 			<select class="ojat-select ojat-filter-select" id="ojat-priority-filter">
 				<option value=""><?php esc_html_e( 'All Priority', 'obydullah-job-application-tracker' ); ?></option>
-				<option value="high"><?php esc_html_e( 'High', 'obydullah-job-application-tracker' ); ?></option>
-				<option value="medium"><?php esc_html_e( 'Medium', 'obydullah-job-application-tracker' ); ?></option>
-				<option value="low"><?php esc_html_e( 'Low', 'obydullah-job-application-tracker' ); ?></option>
+				<?php foreach ( $ojat_priority_labels as $ojat_key => $ojat_label ) : ?>
+					<option value="<?php echo esc_attr( $ojat_key ); ?>"><?php echo esc_html( $ojat_label ); ?></option>
+				<?php endforeach; ?>
 			</select>
 			<button type="button" class="ojat-btn ojat-btn-primary ojat-btn-sm" id="ojat-apply-filter">
 				<span class="dashicons dashicons-filter"></span> <?php esc_html_e( 'Filter', 'obydullah-job-application-tracker' ); ?>
@@ -134,17 +121,7 @@ $ojat_tab_status_map = array(
 				</tr>
 			</thead>
 			<tbody id="ojat-table-body">
-				<?php
-				$ojat_tab_status   = isset( $ojat_tab_status_map[ $current_tab ] ) ? $ojat_tab_status_map[ $current_tab ] : '';
-				$ojat_query_args   = array(
-					'status'   => $ojat_tab_status,
-					'per_page' => 20,
-					'page'     => isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1, // phpcs:ignore
-				);
-				$ojat_applications = $db->get_applications( $ojat_query_args );
-
-				if ( empty( $ojat_applications['items'] ) ) :
-					?>
+				<?php if ( empty( $applications['items'] ) ) : ?>
 				<tr class="ojat-empty-row">
 					<td colspan="7">
 						<div class="ojat-empty-state">
@@ -158,7 +135,7 @@ $ojat_tab_status_map = array(
 					</td>
 				</tr>
 				<?php else : ?>
-					<?php foreach ( $ojat_applications['items'] as $ojat_item ) : ?>
+					<?php foreach ( $applications['items'] as $ojat_item ) : ?>
 					<tr data-id="<?php echo esc_attr( $ojat_item->id ); ?>">
 						<td class="font-semibold"><?php echo esc_html( $ojat_item->company ); ?></td>
 						<td><?php echo esc_html( $ojat_item->role_title ); ?></td>
@@ -172,11 +149,15 @@ $ojat_tab_status_map = array(
 						<td>
 							<span class="ojat-priority ojat-priority-<?php echo esc_attr( $ojat_item->priority ); ?>">
 								<span class="ojat-priority-dot"></span>
-								<?php echo esc_html( ucfirst( $ojat_item->priority ) ); ?>
+								<?php echo esc_html( $ojat_priority_labels[ $ojat_item->priority ] ?? $ojat_item->priority ); ?>
 							</span>
 						</td>
 						<td class="text-muted">
-							<?php echo $ojat_item->date_applied ? esc_html( date_i18n( 'M d, Y', strtotime( $ojat_item->date_applied ) ) ) : '--'; ?>
+							<?php
+							echo $ojat_item->date_applied
+								? esc_html( date_i18n( get_option( 'date_format' ), strtotime( $ojat_item->date_applied ) ) )
+								: '--';
+							?>
 						</td>
 						<td>
 							<div class="ojat-table-actions">
@@ -191,28 +172,37 @@ $ojat_tab_status_map = array(
 			</tbody>
 		</table>
 
-		<?php if ( $ojat_applications['total_pages'] > 1 ) : ?>
+		<?php if ( $applications['total_pages'] > 1 ) : ?>
 		<div class="ojat-pagination">
 			<span>
 				<?php
-				$ojat_from = ( (int) $ojat_applications['page'] - 1 ) * (int) $ojat_applications['per_page'] + 1;
-				$ojat_to   = min( (int) $ojat_applications['page'] * (int) $ojat_applications['per_page'], (int) $ojat_applications['total'] );
+				$ojat_from = ( (int) $applications['page'] - 1 ) * (int) $applications['per_page'] + 1;
+				$ojat_to   = min( (int) $applications['page'] * (int) $applications['per_page'], (int) $applications['total'] );
 				echo esc_html(
 					sprintf(
 						/* translators: 1: from count, 2: to count, 3: total count */
 						__( 'Showing %1$d - %2$d of %3$d applications', 'obydullah-job-application-tracker' ),
 						$ojat_from,
 						$ojat_to,
-						(int) $ojat_applications['total']
+						(int) $applications['total']
 					)
 				);
 				?>
 			</span>
 			<div class="ojat-pagination-pages">
-				<?php for ( $ojat_i = 1; $ojat_i <= (int) $ojat_applications['total_pages']; $ojat_i++ ) : ?>
-					<a href="<?php echo esc_url( add_query_arg( array( 'paged' => $ojat_i ), admin_url( 'admin.php?page=ojat-dashboard' ) ) ); ?>"
+				<?php
+				$ojat_base_url = add_query_arg(
+					array(
+						'page' => 'ojat-dashboard',
+						'tab'  => $current_tab,
+					),
+					admin_url( 'admin.php' )
+				);
+				?>
+				<?php for ( $ojat_i = 1; $ojat_i <= (int) $applications['total_pages']; $ojat_i++ ) : ?>
+					<a href="<?php echo esc_url( add_query_arg( array( 'paged' => $ojat_i ), $ojat_base_url ) ); ?>"
 						data-page="<?php echo esc_attr( $ojat_i ); ?>"
-						class="ojat-page-btn <?php echo (int) $ojat_applications['page'] === $ojat_i ? 'active' : ''; ?>">
+						class="ojat-page-btn <?php echo (int) $applications['page'] === $ojat_i ? 'active' : ''; ?>">
 						<?php echo esc_html( $ojat_i ); ?>
 					</a>
 				<?php endfor; ?>

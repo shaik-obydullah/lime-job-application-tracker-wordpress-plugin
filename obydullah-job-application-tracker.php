@@ -1,17 +1,19 @@
 <?php
 /**
- * Plugin Name:       Obydullah Job Application Tracker
- * Plugin URI:        https://obydullah.com/project/obydullah-job-application-tracker-wordpress-plugin/
- * Description:       Track and manage your job applications from the WordPress admin dashboard.
- * Version:           1.0.0
- * Requires at least: 7.0
- * Requires PHP:      8.0
- * Author:            Shaik Obydullah
- * Author URI:        https://obydullah.com
- * License:           GPL v2 or later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       obydullah-job-application-tracker
- * Domain Path:       /languages
+ * Plugin Name: Obydullah Job Application Tracker
+ * Plugin URI: https://obydullah.com/project/obydullah-job-application-tracker-wordpress-plugin/
+ * Description: Track and manage your job applications from the WordPress admin dashboard.
+ * Version: 1.0.0
+ * Author: Shaik Obydullah
+ * Author URI: https://obydullah.com
+ * Text Domain: obydullah-job-application-tracker
+ * Domain Path: /languages
+ * Requires at least: 6.0
+ * Requires PHP: 8.0
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @package Obydullah_Job_Application_Tracker
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,22 +21,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'OJAT_VERSION', '1.0.0' );
+define( 'OJAT_DB_VERSION', '1' );
+define( 'OJAT_TEXT_DOMAIN', 'obydullah-job-application-tracker' );
 define( 'OJAT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'OJAT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'OJAT_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
+// Load order matters: ojat-formatting defines the shared sanitizers, database
+// defines the field map, and the admin class reads a constant from ajax.
+require_once OJAT_PLUGIN_DIR . 'includes/ojat-formatting.php';
+require_once OJAT_PLUGIN_DIR . 'includes/class-ojat-database.php';
 require_once OJAT_PLUGIN_DIR . 'includes/class-ojat-activator.php';
 require_once OJAT_PLUGIN_DIR . 'includes/class-ojat-deactivator.php';
-require_once OJAT_PLUGIN_DIR . 'includes/class-ojat-database.php';
-require_once OJAT_PLUGIN_DIR . 'includes/class-ojat-admin.php';
 require_once OJAT_PLUGIN_DIR . 'includes/class-ojat-ajax.php';
+require_once OJAT_PLUGIN_DIR . 'includes/class-ojat-admin.php';
 
 register_activation_hook( __FILE__, array( 'OJAT_Activator', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'OJAT_Deactivator', 'deactivate' ) );
 
 add_action( 'plugins_loaded', 'ojat_init' );
 
+/**
+ * Boot the plugin.
+ *
+ * Also reconciles the table with the expected schema, so a plugin updated
+ * while inactive still picks up schema changes on its next load.
+ */
 function ojat_init() {
+	OJAT_Activator::maybe_upgrade();
+
 	OJAT_Admin::instance();
 	OJAT_Ajax::instance();
 }

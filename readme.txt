@@ -1,7 +1,8 @@
 === Obydullah Job Application Tracker ===
 Contributors: obydullah
 Tags: job application tracker, application tracker, job tracker, job search, career
-Requires at least: 7.0
+Text Domain: obydullah-job-application-tracker
+Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 8.0
 Stable tag: 1.0.0
