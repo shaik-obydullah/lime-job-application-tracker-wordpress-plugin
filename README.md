@@ -8,6 +8,12 @@
 
 > Track and manage your job applications from the WordPress admin dashboard — status, priority, contacts, notes, salary, and more, in one clean, full-width interface.
 
+## Download
+
+[![Download on WordPress](https://img.shields.io/badge/Download-WordPress.org-21759b?logo=wordpress&logoColor=white)](https://wordpress.org/plugins/obydullah-job-application-tracker/)
+
+**Latest stable release:** [https://wordpress.org/plugins/obydullah-job-application-tracker/](https://wordpress.org/plugins/obydullah-job-application-tracker/)
+
 ## Description
 
 **Obydullah Job Application Tracker** is a lightweight yet powerful WordPress plugin that turns your admin dashboard into a personal job-search command center. Log every application you send, follow up on interviews, track offers and rejections, and filter your pipeline in real time — all without leaving WordPress.
@@ -60,6 +66,8 @@ The modal detail view showing the full record for any application.
 
 The plugin creates its own table (`wp_ojat_applications`) on activation; no configuration required.
 
+The easiest way is to install it directly from the WordPress plugin directory: [Obydullah Job Application Tracker on WordPress.org](https://wordpress.org/plugins/obydullah-job-application-tracker/) → **Download** → install the ZIP via **Plugins → Add New → Upload Plugin**.
+
 ## Frequently Asked Questions
 
 **Do I need a developer to set this up?**
@@ -78,6 +86,7 @@ Yes. All AJAX requests are nonce-verified, all inputs are sanitized, and every q
 - **Author:** Shaik Obydullah
 - **Author URI:** [https://obydullah.com](https://obydullah.com)
 - **Plugin URI:** [Obydullah Job Tracker Project](https://obydullah.com/project/obydullah-job-application-tracker-wordpress-plugin/)
+- **WordPress.org:** [https://wordpress.org/plugins/obydullah-job-application-tracker/](https://wordpress.org/plugins/obydullah-job-application-tracker/)
 
 ## License
 
